@@ -5,13 +5,18 @@ import * as trpcExpress from '@trpc/server/adapters/express'
 import express from 'express'
 
 import cors from 'cors'
-import { createPost } from './posts'
+import { createPost , loadPost } from './posts'
 const t = initTRPC.create()
 
 const appRouter = t.router({
     hello: t.procedure.input(z.string().nullish()).query((req) => {
         return `hello ${req.input ?? 'world'}`
     }),
+    addPost: t.procedure.query(async () => {
+        const today = new Date()
+        return await createPost({"title" : "تنانتا", "text" : "ddd" , "createdAt" : today , updatedAt : today})
+    }),
+    getPost: t.procedure.query( () => loadPost()),
 })
 
 export type AppRouter = typeof appRouter

@@ -10,8 +10,18 @@ const client = createTRPCProxyClient<AppRouter>({
 
 export const useHello = () => {
     const queryClient = useQueryClient()
-    const { data, refetch } = useQuery(['hello'], async () =>
+    const { data, refetch } = useQuery(['ali'], async () =>
         client.hello.query()
     )
     return { data, refetch }
+}
+
+export const addPost = () => client.addPost.query();
+
+
+export const getPosts = () => {
+    const { data } = useQuery(['getPosts'], async () => {
+        return client.getPost.query()
+    })
+    return { data }
 }
