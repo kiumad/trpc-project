@@ -9,15 +9,18 @@ export const createPost = async (post: PostPayload) => {
 }
 
 
-export const loadPost = async () => {
+export const loadPost = async (s : any) => {
     return await prisma.post.findMany({
-        orderBy: [{id: 'desc'}],
-        select: {
-            id : true,
-            title : true,
-            text : true,
-            createdAt : true,
-            updatedAt: true,
-        }
+        take: 2,
+        skip: s + 2, 
+        orderBy: [{id: "asc"}],
+    })
+}
+
+export const postDetail = async (a : any) => {
+    return await prisma.post.findUnique({
+        where: {
+            id: +a,
+        },
     })
 }

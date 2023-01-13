@@ -9,7 +9,8 @@
     "@tanstack/vue-query": "^4.20.5",
     "@trpc/client": "^10.6.0",
     "abort-controller": "^3.0.0",
-    "vue": "^3.2.45"
+    "vue": "^3.2.45",
+    "vue-router": "^4.1.6"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.4",
