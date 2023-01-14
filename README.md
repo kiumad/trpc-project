@@ -3,10 +3,10 @@ This is an experimental project to learn tRPC.
 In this project, we are going to implement a simple blogging website using Vue/React as the front-end framework and tRPC + Express as the back-end framework. Our blogging website should have features as follows: (As well as bonus features)
 
 ## Recommended features:
-- Should be able to view any posts on the home page with `post title`, `post brief description`, and `post last update date` in each postcard.
+* Should be able to view any posts on the home page with `post title`, `post brief description`, and `post last update date` in each postcard.
 - On the home page posts should be paginated by the `infinite scrolling` mechanism.
 - User should be able to search and filter posts by each post's title and description.
-- Each user should be able `Create New Post` on a separate page e.g. `/posts/create`.
+* Each user should be able `Create New Post` on a separate page e.g. `/posts/create`.
 - Creating a post has an **Important Catch**. Each post should be identified with its `slug` field. Therefore, in the **Creation** phase, the unique post slug should be *validated*.
 - By clicking on each post card user should be navigated to the post detail page using `slug` as an identifier. On the post, details page user should see all available information related to the post.
 - Each user can add comments below other users' posts.
