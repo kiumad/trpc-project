@@ -36,7 +36,6 @@ export const getPosts = () => {
 export const checkUser = (d: any) => {
     const mutation = useMutation({
         mutationFn: (d) => {
-            console.log(d)
             return client.checkUser.query(d)
         },
     })

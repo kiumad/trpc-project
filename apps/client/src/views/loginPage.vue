@@ -22,7 +22,9 @@
 <script setup>
 import { checkUser } from '../Queries'
 import { reactive, watch } from 'vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const { mutation } = checkUser()
 
 const userData = reactive({
@@ -31,7 +33,10 @@ const userData = reactive({
 })
 
 watch(mutation.data, (a) => {
-    console.log(a)
+    if (a === true || a === false) {
+        localStorage.setItem('loggenin', a)
+        if (a === true) router.push({ path: '/profile', replace: true })
+    }
 })
 </script>
 

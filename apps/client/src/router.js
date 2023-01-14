@@ -5,6 +5,7 @@ import AddPost from '@/views/AddPost.vue'
 import PostDetail from '@/views/PostDetail.vue'
 import RegisterPage from '@/views/RegisterPage.vue'
 import loginPage from '@/views/loginPage.vue'
+import ProfilePage from '@/views/ProfilePage.vue'
 
 const routes = [
     {
@@ -32,6 +33,11 @@ const routes = [
         path: '/login',
         name: 'login',
         component: loginPage,
+    },
+    {
+        path: '/panel',
+        name: 'panel',
+        component: ProfilePage,
     },
 ]
 
