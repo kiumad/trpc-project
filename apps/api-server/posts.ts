@@ -9,13 +9,12 @@ export const createPost = async (post: PostPayload) => {
 }
 
 
-export const loadPost = async (s : any) => {
+export const loadPost = async () => {
     return await prisma.post.findMany({
-        take: 2,
-        skip: s + 2, 
         orderBy: [{id: "asc"}],
     })
 }
+
 
 export const postDetail = async (a : any) => {
     return await prisma.post.findUnique({

@@ -1,7 +1,12 @@
 import { createTRPCProxyClient } from '@trpc/client'
 import { httpBatchLink } from '@trpc/client/links/httpBatchLink'
 import type { AppRouter } from 'api-server/server'
-import { useQuery, useQueryClient, useInfiniteQuery } from '@tanstack/vue-query'
+import {
+    useQuery,
+    useQueryClient,
+    useInfiniteQuery,
+    useMutation,
+} from '@tanstack/vue-query'
 const url = import.meta.env.VITE_TRPC_URL
 
 const client = createTRPCProxyClient<AppRouter>({
@@ -16,21 +21,27 @@ export const useHello = () => {
     return { data, refetch }
 }
 
-export const addPost = () => client.addPost.query()
+export const addPost = (data: object) => client.addPost.query(data)
 
 export const getPosts = () => {
-    const { data , isFetched , fetchNextPage } = useInfiniteQuery({
+    const { data, isFetched } = useQuery({
         queryKey: ['getPosts'],
-        queryFn: ({ pageParam }) => {
-            const skip = (pageParam || {}).skip + 2 || 0
-            console.log(pageParam)
-            console.log(skip)
-            return client.getPost.query(skip)
+        queryFn: () => {
+            return client.getPost.query()
         },
-        getNextPageParam: (lastPage, allPages) => lastPage.nextCursor,
-        getPreviousPageParam: (firstPage, allPages) => firstPage.prevCursor,
     })
-    return { data , isFetched , fetchNextPage}
+    return { data, isFetched }
+}
+
+export const checkUser = (d: any) => {
+    const mutation = useMutation({
+        mutationFn: (d) => {
+            console.log(d)
+            return client.checkUser.query(d)
+        },
+    })
+   
+    return { mutation }
 }
 
 export const usePostDetail = (id: any) => {
@@ -39,3 +50,5 @@ export const usePostDetail = (id: any) => {
     })
     return { data }
 }
+
+export const useRegister = (data: object) => client.addUser.query(data)

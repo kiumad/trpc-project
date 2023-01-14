@@ -3,7 +3,7 @@
     <button @click="fetchNextPage">fetch</button>
     <div class="container mx-auto grid grid-cols-4 gap-4">
         <router-link
-            v-for="item in data.pages[0]"
+            v-for="item in data"
             :key="item.id"
             class="p-10 bg-orange-100"
             :to="'/detail/' + item.id"
@@ -21,7 +21,7 @@
 
 <script setup>
 import { getPosts } from '../Queries'
-const { data, isFetched, fetchNextPage } = getPosts()
+const { data, isFetched } = getPosts()
 // console.log(data)
 </script>
 

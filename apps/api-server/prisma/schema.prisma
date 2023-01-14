@@ -17,3 +17,11 @@ model Post {
   createdAt DateTime
   updatedAt DateTime
 }
+
+model Users {
+  id       Int    @id @default(autoincrement())
+  username String @unique
+  fullName String
+  image    String
+  password String
+}
