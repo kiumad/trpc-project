@@ -36,7 +36,7 @@
                             <Menu
                                 as="div"
                                 class="relative ml-3"
-                                v-if="!loggenin"
+                                v-if="loggenin"
                             >
                                 <div>
                                     <MenuButton
@@ -93,13 +93,13 @@
                                             :key="item.name"
                                             v-slot="{ active }"
                                         >
-                                            <a
-                                                :href="item.href"
+                                            <router-link
+                                                :to="item.href"
                                                 :class="[
                                                     active ? 'bg-gray-100' : '',
                                                     'block px-4 py-2 text-sm text-gray-700',
                                                 ]"
-                                                >{{ item.name }}</a
+                                                >{{ item.name }}</router-link
                                             >
                                         </MenuItem>
                                     </MenuItems>
@@ -287,8 +287,7 @@ const navigation = [
     { name: 'Profile', href: '/profile', current: false },
 ]
 const userNavigation = [
-    { name: 'Your Profile', href: '#' },
-    { name: 'Settings', href: '#' },
-    { name: 'Sign out', href: '#' },
+    { name: 'Your Profile', href: '/profile' },
+    { name: 'Sign out', href: '/signout' },
 ]
 </script>

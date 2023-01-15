@@ -503,10 +503,10 @@
                                                 xl:grid-cols-4 xl:gap-x-8
                                             "
                                         >
-                                            <a
-                                                v-for="product in products"
+                                            <router-link
+                                                v-for="product in data"
                                                 :key="product.id"
-                                                :href="product.href"
+                                                :to="'/detail/' + product.id"
                                                 class="group"
                                             >
                                                 <div
@@ -521,8 +521,10 @@
                                                     "
                                                 >
                                                     <img
-                                                        :src="product.imageSrc"
-                                                        :alt="product.imageAlt"
+                                                        :src="
+                                                            'https://picsum.photos/200?random=' +
+                                                            product.id
+                                                        "
                                                         class="
                                                             h-full
                                                             w-full
@@ -538,9 +540,17 @@
                                                         text-sm text-gray-700
                                                     "
                                                 >
-                                                    {{ product.name }}
+                                                    {{ product.title }}
                                                 </h3>
-                                                <p
+                                                <p>
+                                                    {{
+                                                        product.text
+                                                            .split('')
+                                                            .slice(0, 35)
+                                                            .join('')
+                                                    }}...
+                                                </p>
+                                                <span
                                                     class="
                                                         mt-1
                                                         text-lg
@@ -548,9 +558,13 @@
                                                         text-gray-900
                                                     "
                                                 >
-                                                    {{ product.price }}
-                                                </p>
-                                            </a>
+                                                    {{
+                                                        product.updatedAt.split(
+                                                            'T'
+                                                        )[0]
+                                                    }}
+                                                </span>
+                                            </router-link>
                                         </div>
                                     </div>
                                 </div>

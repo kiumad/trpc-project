@@ -11,7 +11,7 @@ export const createPost = async (post: PostPayload) => {
 
 export const loadPost = async () => {
     return await prisma.post.findMany({
-        orderBy: [{id: "asc"}],
+        orderBy: [{id: 'desc'}],
     })
 }
 
