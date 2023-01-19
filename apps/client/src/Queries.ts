@@ -4,7 +4,6 @@ import type { AppRouter } from 'api-server/server'
 import {
     useQuery,
     useQueryClient,
-    useInfiniteQuery,
     useMutation,
 } from '@tanstack/vue-query'
 const url = import.meta.env.VITE_TRPC_URL
@@ -23,11 +22,11 @@ export const useHello = () => {
 
 export const addPost = (data: object) => client.addPost.query(data)
 
-export const getPosts = () => {
+export const getPosts = (input : object) => {
     const { data, isFetched } = useQuery({
         queryKey: ['getPosts'],
         queryFn: () => {
-            return client.getPost.query()
+            return client.getPost.query(input)
         },
     })
     return { data, isFetched }

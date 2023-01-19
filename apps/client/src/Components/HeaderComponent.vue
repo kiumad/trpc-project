@@ -95,19 +95,29 @@
                                         >
                                             <router-link
                                                 :to="item.href"
+                                                v-if="item.link"
                                                 :class="[
                                                     active ? 'bg-gray-100' : '',
                                                     'block px-4 py-2 text-sm text-gray-700',
                                                 ]"
                                                 >{{ item.name }}</router-link
                                             >
+                                            <span
+                                                v-else
+                                                @click="logout"
+                                                :class="[
+                                                    active ? 'bg-gray-100' : '',
+                                                    'block px-4 py-2 text-sm text-gray-700 cursor-pointer',
+                                                ]"
+                                                >{{ item.name }}</span
+                                            >
                                         </MenuItem>
                                     </MenuItems>
                                 </transition>
                             </Menu>
                             <router-link
-                                to="/register"
                                 v-else
+                                to="/login"
                                 href="#"
                                 class="
                                     flex
@@ -273,8 +283,14 @@ import {
     MenuItems,
 } from '@headlessui/vue'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { useRouter } from 'vue-router'
+import { ref } from 'vue'
 
-const loggenin = !!localStorage.getItem('loggenin')
+const router = useRouter()
+
+let loggenin = ref(localStorage.getItem('loggenin') === 'true')
+
+console.log(loggenin.value)
 
 const user = {
     name: 'Tom Cook',
@@ -287,7 +303,13 @@ const navigation = [
     { name: 'Profile', href: '/profile', current: false },
 ]
 const userNavigation = [
-    { name: 'Your Profile', href: '/profile' },
+    { name: 'Your Profile', href: '/profile', link: true },
     { name: 'Sign out', href: '/signout' },
 ]
+
+const logout = () => {
+    localStorage.setItem('loggenin', false)
+    router.push({ path: '/' })
+    loggenin.value = false
+}
 </script>

@@ -1,13 +1,14 @@
 import { initTRPC } from '@trpc/server'
 import z from 'zod'
 import * as trpcExpress from '@trpc/server/adapters/express'
-
+import { Prisma, PrismaClient } from '@prisma/client'
 import express from 'express'
 
 import cors from 'cors'
 import { createPost, loadPost, postDetail } from './posts'
 import { register, checkUser } from './users'
 const t = initTRPC.create()
+const prisma = new PrismaClient()
 
 const appRouter = t.router({
     hello: t.procedure.input(z.string().nullish()).query((req) => {
@@ -41,7 +42,32 @@ const appRouter = t.router({
                 image: 'ddd',
             })
         }),
-    getPost: t.procedure.query((req) => loadPost()),
+    getPost: t.procedure
+        .input(
+            z.object({
+                // limit: z.number().min(1).max(100).nullish(),
+                cursor: z.number().nullish(), // <-- "cursor" needs to exist, but can be any type
+            })
+        )
+        .query(async ({ input }) => {
+            const limit = 7 
+            const { cursor } = input
+            const items = await prisma.post.findMany({
+                take: limit + 1,
+                orderBy: [{ id: "asc" }],
+                cursor: cursor ? { id: cursor + 1 } : undefined,
+            })
+            let nextCursor: typeof cursor | undefined = undefined
+            if (items.length > limit) {
+                const nextItem = items.pop()
+                nextCursor = nextItem!.id
+            }
+            return {
+                items,
+                nextCursor,
+            }
+
+        }),
     checkUser: t.procedure
         .input(
             z.object({

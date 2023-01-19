@@ -504,7 +504,7 @@
                                             "
                                         >
                                             <router-link
-                                                v-for="product in data"
+                                                v-for="product in posts"
                                                 :key="product.id"
                                                 :to="'/detail/' + product.id"
                                                 class="group"
@@ -575,11 +575,13 @@
             </div>
         </div>
     </HeaderComponent>
+    <button @click="fetchNextPage">fetch</button>
 </template>
 
-<script setup>
-import { getPosts } from '../Queries'
-import { ref } from 'vue'
+<script setup lang="ts">
+// import { getPosts } from '../Queries'
+import { useInfiniteQuery } from '@tanstack/vue-query'
+import { ref , watch } from 'vue'
 import HeaderComponent from '../Components/HeaderComponent.vue'
 import {
     Dialog,
@@ -602,6 +604,23 @@ import {
     PlusIcon,
     Squares2X2Icon,
 } from '@heroicons/vue/20/solid'
+import { createTRPCProxyClient } from '@trpc/client'
+import { httpBatchLink } from '@trpc/client/links/httpBatchLink'
+import type { AppRouter } from '../../../api-server/server'
+import {
+    useQuery,
+    useQueryClient,
+    useMutation,
+} from '@tanstack/vue-query'
+const url = import.meta.env.VITE_TRPC_URL
+
+const client = createTRPCProxyClient<AppRouter>({
+    links: [httpBatchLink({ url })],
+})
+
+const tt : any = ref(null)
+
+
 
 const sortOptions = [
     { name: 'Most Popular', href: '#', current: true },
@@ -633,7 +652,30 @@ const filters = [
 
 const mobileFiltersOpen = ref(false)
 
-const { data, isFetched } = getPosts()
+
+const {
+    data,
+    fetchNextPage,
+  } = useInfiniteQuery({
+    queryKey: ['getPosts'],
+    refetchOnWindowFocus: false,
+        queryFn: async  () => {
+            const d = await client.getPost.query({cursor : tt.value || 0 })
+            return d;
+        },
+        getNextPageParam: (lastPage) => tt.value = lastPage.nextCursor || lastPage.items.length,
+  })
+
+
+// const { data , fetchNextPage} = getPosts();
+const posts = ref([])
+
+watch(data , (d) => {
+    // const dd = data?.value?.pages[0]?.items;
+    console.log(d)
+    // posts.value = posts.value.concat(dd);
+})
+
 
 const products = [
     {
