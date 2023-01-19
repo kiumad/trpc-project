@@ -670,10 +670,11 @@ const {
 // const { data , fetchNextPage} = getPosts();
 const posts = ref([])
 
-watch(data , (d) => {
+watch(data , (d , b) => {
     // const dd = data?.value?.pages[0]?.items;
-    console.log(d)
-    // posts.value = posts.value.concat(dd);
+    console.log("first" , d?.pages[0]?.items)
+    console.log("last" ,b?.pages[0]?.items)
+    // posts.value = posts.value.concat(d?.pages[0]?.items || b?.pages[0]?.items );
 })
 
 
