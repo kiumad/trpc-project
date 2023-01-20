@@ -1,23 +1,4 @@
 <template>
-    <!-- <h1>test</h1>
-    <button @click="fetchNextPage">fetch</button>
-    <div class="container mx-auto grid grid-cols-4 gap-4">
-        <router-link
-            v-for="item in data"
-            :key="item.id"
-            class="p-10 bg-orange-100"
-            :to="'/detail/' + item.id"
-        >
-            <span>id : {{ item.id }}</span>
-            <span>title : {{ item.title }}</span>
-            <span>text : {{ item.text }}</span>
-            <span>cerate : {{ item.createdAt }}</span>
-            <span>last updated : {{ item.updatedAt }}</span>
-        </router-link>
-    </div>
-
-    <router-link to="/add">add post</router-link> -->
-
     <HeaderComponent>
         <div class="bg-white">
             <div>
@@ -248,7 +229,7 @@
                             items-baseline
                             justify-between
                             border-b border-gray-200
-                            pt-24
+                            
                             pb-6
                         "
                     >
@@ -483,6 +464,7 @@
                             <div class="lg:col-span-3">
                                 <div class="bg-white">
                                     <div
+                                        @scroll="onScroll"
                                         class="
                                             mx-auto
                                             max-w-2xl
@@ -490,6 +472,8 @@
                                             px-4
                                             sm:py-24 sm:px-6
                                             lg:max-w-7xl lg:px-8
+                                            h-screen
+                                            overflow-auto
                                         "
                                     >
                                         <h2 class="sr-only">Products</h2>
@@ -516,8 +500,6 @@
                                                         overflow-hidden
                                                         rounded-lg
                                                         bg-gray-200
-                                                        xl:aspect-w-7
-                                                        xl:aspect-h-8
                                                     "
                                                 >
                                                     <img
@@ -663,64 +645,30 @@ const {
             const d = await client.getPost.query({cursor : tt.value || 0 })
             return d;
         },
-        getNextPageParam: (lastPage) => tt.value = lastPage.nextCursor || lastPage.items.length,
+        getNextPageParam: (lastPage) => tt.value = lastPage.nextCursor || lastPage?.items[lastPage?.items.length - 1]?.id,
   })
 
 
 // const { data , fetchNextPage} = getPosts();
 const posts = ref([])
 
-watch(data , (d , b) => {
+watch(data , (d) => {
     // const dd = data?.value?.pages[0]?.items;
-    console.log("first" , d?.pages[0]?.items)
-    console.log("last" ,b?.pages[0]?.items)
-    // posts.value = posts.value.concat(d?.pages[0]?.items || b?.pages[0]?.items );
+
+    console.log("first" , d.pages[d.pages.length - 1])
+    // console.log("last" , b?.value?.pages[0]?.items)
+    
+    posts.value = posts.value.concat(d?.pages[d.pages.length - 1]?.items);
 })
 
+const onScroll = ({ target: { scrollTop, clientHeight, scrollHeight }}) => {
+      if (scrollTop + clientHeight >= scrollHeight) {
+        fetchNextPage()
+      }
+    }
 
-const products = [
-    {
-        id: 1,
-        name: 'Earthen Bottle',
-        href: '#',
-        price: '$48',
-        imageSrc:
-            'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-01.jpg',
-        imageAlt:
-            'Tall slender porcelain bottle with natural clay textured body and cork stopper.',
-    },
-    {
-        id: 2,
-        name: 'Nomad Tumbler',
-        href: '#',
-        price: '$35',
-        imageSrc:
-            'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-02.jpg',
-        imageAlt:
-            'Olive drab green insulated bottle with flared screw lid and flat top.',
-    },
-    {
-        id: 3,
-        name: 'Focus Paper Refill',
-        href: '#',
-        price: '$89',
-        imageSrc:
-            'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-03.jpg',
-        imageAlt:
-            'Person using a pen to cross a task off a productivity paper card.',
-    },
-    {
-        id: 4,
-        name: 'Machined Mechanical Pencil',
-        href: '#',
-        price: '$35',
-        imageSrc:
-            'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-04.jpg',
-        imageAlt:
-            'Hand holding black machined steel mechanical pencil with brass tip and top.',
-    },
-    // More products...
-]
+
+
 // console.log(data)
 </script>
 
