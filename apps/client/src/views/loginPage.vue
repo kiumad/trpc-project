@@ -220,6 +220,7 @@ const userData = reactive({
 watch(mutation.data, (a) => {
     if (a === true || a === false) {
         localStorage.setItem('loggenin', a)
+        localStorage.setItem('userid', userData.username)
         if (a === true) router.push({ path: '/profile', replace: true })
     }
 })

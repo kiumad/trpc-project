@@ -18,10 +18,10 @@ export const checkUser = async (data: any) => {
     else return false
 }
 
-// export const userData = async (a : any) => {
-//     return await prisma.post.findUnique({
-//         where: {
-//             id: +a,
-//         },
-//     })
-// }
+export const userData = async (a : string) => {
+    return await prisma.users.findUnique({
+        where: {
+            username: a,
+        },
+    })
+}

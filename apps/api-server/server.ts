@@ -6,7 +6,7 @@ import express from 'express'
 
 import cors from 'cors'
 import { createPost, loadPost, postDetail } from './posts'
-import { register, checkUser } from './users'
+import { register, checkUser , userData } from './users'
 const t = initTRPC.create()
 const prisma = new PrismaClient()
 
@@ -50,10 +50,12 @@ const appRouter = t.router({
             })
         )
         .query(async ({ input }) => {
-            const limit = 7 
+            const limit = 30
             const { cursor } = input
+            // const total = prisma.post.
+
             const items = await prisma.post.findMany({
-                take: limit + 1,
+                take: limit,
                 orderBy: [{ id: "asc" }],
                 cursor: cursor ? { id: cursor + 1 } : undefined,
             })
@@ -80,6 +82,13 @@ const appRouter = t.router({
                 username: req.input.username,
                 password: req.input.password,
             })
+        ),
+        userData: t.procedure
+        .input(
+            z.string()
+        )
+        .query((req) =>
+        userData(req.input)
         ),
     getPostDetail: t.procedure
         .input(z.string().nullish())

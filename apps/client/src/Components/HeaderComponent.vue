@@ -33,6 +33,27 @@
                     <div class="hidden md:block">
                         <div class="ml-4 flex items-center md:ml-6">
                             <!-- Profile dropdown -->
+                            <router-link
+                            v-if="loggenin"
+                                to="/add"
+                                class="
+                                    flex
+                                    items-center
+                                    justify-center
+                                    rounded-md
+                                    border border-transparent
+                                    bg-indigo-600
+                                    px-5
+                                    py-2
+                                    text-base
+                                    font-medium
+                                    text-white
+                                    shadow-sm
+                                    hover:bg-indigo-700
+                                    mr-5
+                                "
+                                >Create post</router-link
+                            >
                             <Menu
                                 as="div"
                                 class="relative ml-3"
@@ -59,7 +80,7 @@
                                         >
                                         <img
                                             class="h-8 w-8 rounded-full"
-                                            :src="user.imageUrl"
+                                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfTuaYwwB5Q5JTUDxKfY47afY-NUjljAcQKfqAvPpd&s"
                                             alt=""
                                         />
                                     </MenuButton>
@@ -115,10 +136,10 @@
                                     </MenuItems>
                                 </transition>
                             </Menu>
+                           
                             <router-link
-                                v-else
+                            v-if="!loggenin"
                                 to="/login"
-                                href="#"
                                 class="
                                     flex
                                     items-center

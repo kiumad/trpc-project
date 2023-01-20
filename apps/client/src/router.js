@@ -35,8 +35,8 @@ const routes = [
         component: loginPage,
     },
     {
-        path: '/panel',
-        name: 'panel',
+        path: '/profile',
+        name: 'profile',
         component: ProfilePage,
     },
 ]

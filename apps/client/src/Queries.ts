@@ -42,6 +42,16 @@ export const checkUser = (d: any) => {
     return { mutation }
 }
 
+export const userData = (d: string) => {
+    const { data } = useQuery({
+        queryKey: ['userData'],
+        queryFn: () => {
+            return client.userData.query(d)
+        },
+    })
+    return { data }
+}
+
 export const usePostDetail = (id: any) => {
     const { data } = useQuery(['postDetail'], async () => {
         return client.getPostDetail.query(id)
