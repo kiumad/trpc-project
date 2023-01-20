@@ -47,7 +47,28 @@
             </dl>
         </div>
     </div>
+    <router-link
+                                to="add"
+                                class="
+                                    flex
+                                    items-center
+                                    justify-center
+                                    rounded-md
+                                    border border-transparent
+                                    bg-indigo-600
+                                    px-5
+                                    py-2
+                                    text-base
+                                    font-medium
+                                    text-white
+                                    shadow-sm
+                                    hover:bg-indigo-700
+                                    mr-5
+                                "
+                                >Create post</router-link
+                            >
 </HeaderComponent>
+
 </template>
 
 <script setup>
