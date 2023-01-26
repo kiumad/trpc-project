@@ -572,7 +572,7 @@
         </div>
     </HeaderComponent>
 
-    <button @click="fetchNextPage">fetch</button>
+    <!-- <button @click="fetchNextPage">fetch</button> -->
 </template>
 
 <script setup lang="ts">
