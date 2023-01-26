@@ -6,7 +6,8 @@ import express from 'express'
 
 import cors from 'cors'
 import { createPost, loadPost, postDetail } from './posts'
-import { register, checkUser , userData } from './users'
+import { register, checkUser, userData } from './users'
+import { addComment , getPostComment } from './comment'
 const t = initTRPC.create()
 const prisma = new PrismaClient()
 
@@ -42,6 +43,28 @@ const appRouter = t.router({
                 image: 'ddd',
             })
         }),
+    addComment: t.procedure
+        .input(
+            z.object({
+                username: z.string(),
+                text: z.string(),
+                postId: z.number(),
+            })
+        )
+        .query(async (req) => {
+            return await addComment({
+                username: req.input.username,
+                text: req.input.text,
+                postId: req.input.postId,
+            })
+        }),
+        getPostComment: t.procedure
+        .input(
+           z.string()
+        )
+        .query(async (req) => {
+            return await getPostComment(req.input)
+        }),
     getPost: t.procedure
         .input(
             z.object({
@@ -56,7 +79,7 @@ const appRouter = t.router({
 
             const items = await prisma.post.findMany({
                 take: limit,
-                orderBy: [{ id: "asc" }],
+                orderBy: [{ id: 'asc' }],
                 cursor: cursor ? { id: cursor + 1 } : undefined,
             })
             let nextCursor: typeof cursor | undefined = undefined
@@ -68,7 +91,6 @@ const appRouter = t.router({
                 items,
                 nextCursor,
             }
-
         }),
     checkUser: t.procedure
         .input(
@@ -83,13 +105,7 @@ const appRouter = t.router({
                 password: req.input.password,
             })
         ),
-        userData: t.procedure
-        .input(
-            z.string()
-        )
-        .query((req) =>
-        userData(req.input)
-        ),
+    userData: t.procedure.input(z.string()).query((req) => userData(req.input)),
     getPostDetail: t.procedure
         .input(z.string().nullish())
         .query((req) => postDetail(req.input)),

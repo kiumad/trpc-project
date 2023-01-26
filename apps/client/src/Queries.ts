@@ -1,11 +1,7 @@
 import { createTRPCProxyClient } from '@trpc/client'
 import { httpBatchLink } from '@trpc/client/links/httpBatchLink'
 import type { AppRouter } from 'api-server/server'
-import {
-    useQuery,
-    useQueryClient,
-    useMutation,
-} from '@tanstack/vue-query'
+import { useQuery, useQueryClient, useMutation } from '@tanstack/vue-query'
 const url = import.meta.env.VITE_TRPC_URL
 
 const client = createTRPCProxyClient<AppRouter>({
@@ -22,7 +18,7 @@ export const useHello = () => {
 
 export const addPost = (data: object) => client.addPost.query(data)
 
-export const getPosts = (input : object) => {
+export const getPosts = (input: object) => {
     const { data, isFetched } = useQuery({
         queryKey: ['getPosts'],
         queryFn: () => {
@@ -38,7 +34,7 @@ export const checkUser = (d: any) => {
             return client.checkUser.query(d)
         },
     })
-   
+
     return { mutation }
 }
 
@@ -54,9 +50,21 @@ export const userData = (d: string) => {
 
 export const usePostDetail = (id: any) => {
     const { data } = useQuery(['postDetail'], async () => {
-        return client.getPostDetail.query(id)
+        return {
+            post: await client.getPostDetail.query(id),
+            comments: await client.getPostComment.query(id),
+        }
     })
     return { data }
 }
 
 export const useRegister = (data: object) => client.addUser.query(data)
+
+export const useAddComment = (data: object) => client.addComment.query(data)
+
+// export const useGetPostComments = (id: any) => {
+//     const { data } = useQuery(['postComment'], async () => {
+//         return client.getPostComment.query(12)
+//     })
+//     return { data }
+// }

@@ -52,8 +52,7 @@
                                     hover:bg-indigo-700
                                     mr-5
                                 "
-                                >Create post</router-link
-                            >
+                                >Create post</router-link>
                             <Menu
                                 as="div"
                                 class="relative ml-3"

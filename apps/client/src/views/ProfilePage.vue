@@ -24,7 +24,7 @@
                     <dd
                         class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0"
                     >
-                        {{data.fullName || "empty"}}
+                        {{data?.fullName || "empty"}}
                     </dd>
                 </div>
                 <div
@@ -41,14 +41,14 @@
                     <dd
                         class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0"
                     >
-                    {{data.username || "empty"}}
+                    {{data?.username || "empty"}}
                     </dd>
                 </div>
             </dl>
         </div>
     </div>
     <router-link
-                                to="add"
+                                :to="{name : 'addPost'}"
                                 class="
                                     flex
                                     items-center
@@ -67,6 +67,8 @@
                                 "
                                 >Create post</router-link
                             >
+
+                            <!-- <button @click=""></button> -->
 </HeaderComponent>
 
 </template>
@@ -76,11 +78,17 @@ import HeaderComponent from '../Components/HeaderComponent.vue'
 import { PaperClipIcon } from '@heroicons/vue/20/solid'
 import {ref} from 'vue'
 import {userData} from '../Queries'
+// import {router} from 'vue-router'
+
+
+// const test = () => {
+//     route.push
+// }
 
 const username = ref(localStorage.getItem("userid"))
 
 const {data} = userData(username.value)
-console.log(data)
+// console.log(data)
     
 </script>
 
