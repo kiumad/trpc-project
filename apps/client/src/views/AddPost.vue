@@ -7,11 +7,13 @@
 
 <script setup>
 import { addPost } from '../Queries'
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
+const username = ref(localStorage.getItem('userid'))
 
 const newPostData = reactive({
     title: '',
     text: '',
+    username: username,
 })
 </script>
 

@@ -31,7 +31,8 @@
                                 "
                             />
                             <p class="text-sm">
-                                Leroy Jenkins • {{ data?.post?.createdAt }}
+                                {{ data?.post?.username }} •
+                                {{ data?.post?.createdAt }}
                             </p>
                         </div>
                     </div>
@@ -58,7 +59,7 @@
                                 placeholder="Type here ..."
                             />
                             <button
-                                @click="useAddComment(commentData)"
+                                @click="addComent"
                                 class="bg-black text-white p-2"
                             >
                                 Comment
@@ -66,12 +67,9 @@
                         </div>
                         <ul
                             class="ml-4 space-y-1 list-disc pt-5"
-                            v-if="data?.comments?.length > 0"
+                            v-if="comments?.length > 0"
                         >
-                            <li
-                                v-for="comment in data.comments"
-                                :key="comment.id"
-                            >
+                            <li v-for="comment in comments" :key="comment.id">
                                 <small>{{ comment.username }}</small> <br />
                                 <span>{{ comment.text }}</span>
                             </li>
@@ -89,18 +87,30 @@ import { usePostDetail } from '../Queries'
 import HeaderComponent from '../Components/HeaderComponent.vue'
 
 import { useAddComment } from '../Queries'
-import { reactive, ref } from 'vue'
+import { reactive, ref, watch } from 'vue'
 import YektanetLogo from '../Components/YektanetLogo.vue'
 
 const route = useRoute()
 const { data } = usePostDetail(route.params.id)
 const username = ref(localStorage.getItem('userid'))
 
+let comments = ref()
+
+watch(data, (d) => {
+    console.log(d)
+    comments.value = d?.comments
+})
+
 const commentData = reactive({
     username: username,
     text: '',
     postId: +route.params.id,
 })
+
+const addComent = () => {
+    comments.value = comments.value.concat(commentData)
+    useAddComment(commentData)
+}
 </script>
 
 <style scoped>

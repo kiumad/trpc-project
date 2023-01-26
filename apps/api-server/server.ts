@@ -16,12 +16,13 @@ const appRouter = t.router({
         return `hello ${req.input ?? 'world'}`
     }),
     addPost: t.procedure
-        .input(z.object({ title: z.string(), text: z.string() }))
+        .input(z.object({ title: z.string(), text: z.string() , username : z.string() }))
         .query(async (req) => {
             const today = new Date()
             return await createPost({
                 title: req.input.title,
                 text: req.input.text,
+                username: req.input.username,
                 createdAt: today,
                 updatedAt: today,
             })

@@ -244,6 +244,11 @@
                         </h1>
 
                         <div class="flex items-center">
+                            <input
+                                v-model="searchValue"
+                                type="text"
+                                placeholder="Search in blogs"
+                            />
                             <Menu
                                 as="div"
                                 class="relative inline-block text-left"
@@ -323,7 +328,6 @@
                                     </MenuItems>
                                 </transition>
                             </Menu>
-
                             <button
                                 type="button"
                                 class="
@@ -488,7 +492,7 @@
                                             "
                                         >
                                             <router-link
-                                                v-for="product in posts"
+                                                v-for="product in filtered_posts()"
                                                 :key="product.id"
                                                 :to="'/detail/' + product.id"
                                                 class="group"
@@ -567,13 +571,14 @@
             </div>
         </div>
     </HeaderComponent>
+
     <button @click="fetchNextPage">fetch</button>
 </template>
 
 <script setup lang="ts">
 // import { getPosts } from '../Queries'
 import { useInfiniteQuery } from '@tanstack/vue-query'
-import { ref, watch, onUnmounted } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import HeaderComponent from '../Components/HeaderComponent.vue'
 import {
     Dialog,
@@ -608,7 +613,7 @@ const client = createTRPCProxyClient<AppRouter>({
 
 const tt: any = ref(null)
 
-onUnmounted(() => (tt.value = null))
+const searchValue: any = ref('')
 
 const sortOptions = [
     { name: 'Most Popular', href: '#', current: true },
@@ -640,12 +645,11 @@ const filters = [
 
 const mobileFiltersOpen = ref(false)
 
-const { data, fetchNextPage, isLoading } = useInfiniteQuery({
+const { data, fetchNextPage, isLoading, refetch } = useInfiniteQuery({
     queryKey: ['getPosts'],
     // refetchOnWindowFocus: false,
     queryFn: async () => {
         const d = await client.getPost.query({ cursor: tt.value || 0 })
-        console.log(d)
         return d
     },
     getNextPageParam: (lastPage) =>
@@ -658,7 +662,16 @@ const posts = ref([])
 
 watch(data, (d) => {
     posts.value = posts.value.concat(d?.pages[d.pages.length - 1]?.items)
+    filtered_posts()
+    if (d?.pages[d.pages.length - 1]?.items?.length) {
+        tt.value = null
+        refetch()
+    }
 })
+
+const filtered_posts = () => {
+    return posts.value.filter((a: any) => a.title.includes(searchValue.value))
+}
 
 const onScroll = ({ target: { scrollTop, clientHeight, scrollHeight } }) => {
     if (scrollTop + clientHeight >= scrollHeight) {

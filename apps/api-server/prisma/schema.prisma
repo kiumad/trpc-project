@@ -11,6 +11,7 @@ model Post {
   id        Int      @id @default(autoincrement())
   title     String
   text      String
+  username  String   @default("anonymous")
   createdAt DateTime
   updatedAt DateTime
 }
