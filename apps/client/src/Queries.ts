@@ -55,6 +55,7 @@ export const usePostDetail = (id: any) => {
             comments: await client.getPostComment.query(id),
         }
     })
+    console.log(data)
     return { data }
 }
 

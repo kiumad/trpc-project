@@ -1,12 +1,4 @@
 <template>
-    <!--
-      This example requires updating your template:
-  
-      ```
-      <html class="h-full bg-gray-100">
-      <body class="h-full">
-      ```
-    -->
     <div class="min-h-full">
         <Disclosure as="nav" class="bg-gray-800" v-slot="{ open }">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -34,7 +26,7 @@
                         <div class="ml-4 flex items-center md:ml-6">
                             <!-- Profile dropdown -->
                             <router-link
-                            v-if="loggenin"
+                                v-if="loggenin"
                                 to="add"
                                 class="
                                     flex
@@ -52,7 +44,8 @@
                                     hover:bg-indigo-700
                                     mr-5
                                 "
-                                >Create post</router-link>
+                                >Create post</router-link
+                            >
                             <Menu
                                 as="div"
                                 class="relative ml-3"
@@ -135,9 +128,9 @@
                                     </MenuItems>
                                 </transition>
                             </Menu>
-                           
+
                             <router-link
-                            v-if="!loggenin"
+                                v-if="!loggenin"
                                 to="/login"
                                 class="
                                     flex
