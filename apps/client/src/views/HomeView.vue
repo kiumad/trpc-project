@@ -135,7 +135,19 @@
                                             </router-link>
                                         </div>
                                     </div>
-                                    <div v-else class="lds-roller">
+                                    <span v-else-if="posts?.length === 0"
+                                        >Please
+                                        <router-link
+                                            to="/login"
+                                            style="
+                                                color: blue;
+                                                font-weight: bold;
+                                            "
+                                            >login</router-link
+                                        >
+                                        and create first post</span
+                                    >
+                                    <div v-if="isLoading" class="lds-roller">
                                         <div></div>
                                         <div></div>
                                         <div></div>

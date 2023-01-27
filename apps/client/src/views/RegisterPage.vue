@@ -116,7 +116,7 @@
 
             <div>
                 <button
-                    @click="useRegister(userData)"
+                    @click="register"
                     class="
                         mb-3
                         group
@@ -229,6 +229,9 @@
 import { useRegister } from '../Queries'
 import { reactive } from 'vue'
 import YektanetLogo from '../Components/YektanetLogo.vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const userData = reactive({
     username: '',
@@ -236,6 +239,12 @@ const userData = reactive({
     password: '',
     image: 'dsfdsf',
 })
+const register = () => {
+    useRegister(userData)
+    localStorage.setItem('loggenin', true)
+    localStorage.setItem('userid', userData.username)
+    router.push({ path: '/profile', replace: true })
+}
 </script>
 
 <style scoped>
